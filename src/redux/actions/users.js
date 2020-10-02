@@ -12,3 +12,10 @@ export function getUserDetails(credentials) {
         payload: credentials
     }
 }
+
+export function addToFav(item) {
+    return {
+        type: type.FAV_ADD_REQUEST,
+        payload: item
+    }
+}

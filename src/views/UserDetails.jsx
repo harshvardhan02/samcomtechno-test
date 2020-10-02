@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getUserDetails } from '../redux/actions/users';
+import { addToFav } from '../redux/actions/users';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -25,16 +26,22 @@ class UserDetails extends Component {
 
     componentDidMount() {
         const id = this.props.match.params.id;
+        console.log(id, 'idddddddddddddddddddd');
+        console.log(this.props.userDetail.id, 'userdeital dddddddddddddddd')
         this.props.userDetails(id)
+        console.log(id, '-------------------asdfjsdfkajkfjalllllllllll')
     }
 
     onMakeFav = () => {
+        const id = this.props.match.params.id
+        this.props.addToFav(id)
         this.setState({
             isFav: true
         })
     }
 
     render() {
+        const id = this.props.match.params.id;
         return (
             <div className='container'>
                 <h4 className="my-3 text-center">Contact Details</h4>
@@ -53,11 +60,12 @@ class UserDetails extends Component {
                             <CardContent>
                                 <Typography variant="body2" color="textSecondary" component="p">
                                     Email:  {this.props.userDetail.email}
+                                    <p>{this.props.userDetail.id}</p>
                                 </Typography>
                             </CardContent>
                             <CardActions disableSpacing>
                                 <IconButton onClick={this.onMakeFav} aria-label="add to favorites">
-                                    {this.state.isFav ? <FavoriteIcon /> : <FavoriteBorderIcon/> }
+                                    {id === this.props.userDetail.id ? <FavoriteIcon /> : <FavoriteBorderIcon/> }
                                 </IconButton>
                             </CardActions>
                         </Card>
@@ -70,13 +78,15 @@ class UserDetails extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userDetail: state.users.getUsersById
+        userDetail: state.users.getUsersById,
+        fav: state.fav.fav
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        userDetails: (id) => { dispatch(getUserDetails(id)) }
+        userDetails: (id) => { dispatch(getUserDetails(id)) },
+        addToFav: (item) => { dispatch(addToFav(item)) }
     }
 }
 
